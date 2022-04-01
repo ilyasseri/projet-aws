@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "crud-restaurants-projet"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-97gvw0ri9lzz"
+s3_prefix = "crud-restaurants-projet"
+region = "eu-central-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  crud-project-restaurant
+  Sample SAM Template for crud-project-restaurant
+  
+Globals:
+  Function:
+    Timeout: 30
+
+Resources:
+  CreateTableFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/
+      Handler: app.createTable
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Restaurants
+
+  AddRestaurantFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/
+      Handler: app.addRestaurant
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Restaurants
+
+  GetAllRestaurantFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/
+      Handler: app.getAllRestaurants
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Restaurants
+  
+  GetRestaurantFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/
+      Handler: app.getRestaurant
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Restaurants
+
+  UpdateRestaurantNameFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/
+      Handler: app.updateRestaurantName
+      Runtime: nodejs14.x
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Restaurants
