@@ -120,7 +120,7 @@ const FindRestIntentHandler = {
 const FindRestByTypeIntentHandler = {
     canHandle(handlerInput) {
         return Alexa.getRequestType(handlerInput.requestEnvelope) === 'IntentRequest'
-            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'FindRestIntent';
+            && Alexa.getIntentName(handlerInput.requestEnvelope) === 'FindRestByTypeIntent';
     },
     handle(handlerInput) {
         const type = handlerInput.requestEnvelope.request.intent.slots.type.value;

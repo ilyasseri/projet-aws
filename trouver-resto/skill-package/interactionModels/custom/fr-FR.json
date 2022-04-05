@@ -118,23 +118,24 @@
             ]
         },
         "prompts": [
-        {
-            "id": "Elicit.Intent-FindRest.IntentSlot-uid",
-            "variations": [
-                {
-                    "type": "Plaintext",
-                    "value": "Nom du restaurant ?"
-                }
-            ]
-        },
-        {
-            "id": "Elicit.Intent-FindRestByType.IntentSlot-type",
-            "variations": [
-                {
-                    "type": "Plaintext",
-                    "value": "Quel type de restaurant recherchez-vous ?"
-                }
-            ]
-        }]
+            {
+                "id": "Elicit.Intent-FindRest.IntentSlot-uid",
+                "variations": [
+                    {
+                        "type": "Plaintext",
+                        "value": "Nom du restaurant ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Intent-FindRestByType.IntentSlot-type",
+                "variations": [
+                    {
+                        "type": "Plaintext",
+                        "value": "Quel type de restaurant recherchez-vous ?"
+                    }
+                ]
+            }
+        ]
     }
   }
