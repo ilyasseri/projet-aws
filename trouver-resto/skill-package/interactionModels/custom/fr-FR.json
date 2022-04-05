@@ -1,0 +1,141 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "resto",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "HelloWorldIntent",
+                    "slots": [],
+                    "samples": [
+                        "hello",
+                        "how are you",
+                        "say hi world",
+                        "say hi",
+                        "hi",
+                        "say hello world",
+                        "say hello"
+                    ]
+                },
+                {
+                    "name": "FindRestIntent",
+                    "slots": [
+                        {
+                            "name": "uid",
+                            "type": "UID"
+                        }
+                    ],
+                    "samples": [
+                        "trouver le restaurant {uid}"
+                    ]
+                },
+                {
+                    "name": "FindRestByTypeIntent",
+                    "slots": [
+                        {
+                            "name": "type",
+                            "type": "TYPE"
+                        }
+                    ],
+                    "samples": [
+                        "trouver un {type}"
+                    ]
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                }
+            ],
+            "types": [
+                {
+                    "name": "UID",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "uid"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "TYPE",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "type"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "dialog": {
+            "intents": [
+                {
+                    "name": "FindRestIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "uid",
+                            "type": "UID",
+                            "elicitationRequired": true,
+                            "confirmationRequired": false,
+                            "prompts": {
+                                "elicitation": "Elicit.Intent-FindRest.IntentSlot-uid"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "FindRestByTypeIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "type",
+                            "type": "TYPE",
+                            "elicitationRequired": true,
+                            "confirmationRequired": false,
+                            "prompts": {
+                                "elicitation": "Elicit.Intent-FindRestByType.IntentSlot-type"
+                            }
+                        }
+                    ]
+
+                }
+            ]
+        },
+        "prompts": [
+            {
+                "id": "Elicit.Intent-FindRest.IntentSlot-uid",
+                "variations": [
+                    {
+                        "type": "Plaintext",
+                        "value": "Nom du restaurant ?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Intent-FindRestByType.IntentSlot-type",
+                "variations": [
+                    {
+                        "type": "Plaintext",
+                        "value": "Quel type de restaurant recherchez-vous ?"
+                    }
+                ]
+            }
+        ]
+    }
+  }

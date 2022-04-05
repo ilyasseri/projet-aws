@@ -1,0 +1,40 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "Sample Short Description",
+          "examplePhrases": [
+            "Alexa open hello world",
+            "hello",
+            "help"
+          ],
+          "name": "trouver-resto",
+          "description": "Sample Full Description"
+        },
+        "fr-FR": {
+          "summary": "Exemple description courte",
+          "examplePhrases": [
+            "Alexa ouvre hello world",
+            "bonjour",
+            "aide"
+          ],
+          "name": "trouver-resto",
+          "description": "Exemple description complète"
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Sample Testing Instructions.",
+      "category": "KNOWLEDGE_AND_TRIVIA",
+      "distributionCountries": []
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:eu-central-1:709349755862:function:ask-trouver-resto-default-skill-AlexaSkillFunction-SSI0O1T12FfQ"
+        }
+      }
+    },
+    "manifestVersion": "1.0"
+  }
+}
