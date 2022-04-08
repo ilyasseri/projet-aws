@@ -33,7 +33,7 @@
                     "slots": [
                         {
                             "name": "uid",
-                            "type": "UID"
+                            "type": "UID_TYPE"
                         }
                     ],
                     "samples": [
@@ -44,12 +44,12 @@
                     "name": "FindRestByTypeIntent",
                     "slots": [
                         {
-                            "name": "type",
-                            "type": "TYPE"
+                            "name": "restaurant",
+                            "type": "RESTAURANT_TYPE"
                         }
                     ],
                     "samples": [
-                        "trouver un {type}"
+                        "trouver un {restaurant}"
                     ]
                 },
                 {
@@ -59,7 +59,7 @@
             ],
             "types": [
                 {
-                    "name": "UID",
+                    "name": "UID_TYPE",
                     "values": [
                         {
                             "name": {
@@ -69,11 +69,11 @@
                     ]
                 },
                 {
-                    "name": "TYPE",
+                    "name": "RESTAURANT_TYPE",
                     "values": [
                         {
                             "name": {
-                                "value": "type"
+                                "value": "restaurant"
                             }
                         }
                     ]
@@ -89,7 +89,7 @@
                     "slots": [
                         {
                             "name": "uid",
-                            "type": "UID",
+                            "type": "UID_TYPE",
                             "elicitationRequired": true,
                             "confirmationRequired": false,
                             "prompts": {
@@ -104,12 +104,12 @@
                     "prompts": {},
                     "slots": [
                         {
-                            "name": "type",
-                            "type": "TYPE",
+                            "name": "restaurant",
+                            "type": "RESTAURANT_TYPE",
                             "elicitationRequired": true,
                             "confirmationRequired": false,
                             "prompts": {
-                                "elicitation": "Elicit.Intent-FindRestByType.IntentSlot-type"
+                                "elicitation": "Elicit.Intent-FindRestByType.IntentSlot-restaurant"
                             }
                         }
                     ]
@@ -122,16 +122,16 @@
                 "id": "Elicit.Intent-FindRest.IntentSlot-uid",
                 "variations": [
                     {
-                        "type": "Plaintext",
+                        "type": "PlainText",
                         "value": "Nom du restaurant ?"
                     }
                 ]
             },
             {
-                "id": "Elicit.Intent-FindRestByType.IntentSlot-type",
+                "id": "Elicit.Intent-FindRestByType.IntentSlot-restaurant",
                 "variations": [
                     {
-                        "type": "Plaintext",
+                        "type": "PlainText",
                         "value": "Quel type de restaurant recherchez-vous ?"
                     }
                 ]

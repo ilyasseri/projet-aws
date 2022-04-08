@@ -2,6 +2,46 @@
 // Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
 // session persistence, api calls, and more.
 const Alexa = require('ask-sdk-core');
+const lambda = new AWS.Lambda({ region: "eu-central-1" });
+
+const getResto = async (uid) => {
+    return await new Promise((resolve, reject) => {
+        var params = {
+            FunctionName: 'GetRestaurant', // the lambda function we are going to invoke
+            Payload: JSON.stringify({
+                uid,
+            }),
+        };
+    
+        lambda.invoke(params, (err, results) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(results.Payload);
+        }
+        });
+    });
+};
+
+const getRestosByType = async (type) => {
+    return await new Promise((resolve, reject) => {
+        var params = {
+            FunctionName: 'GetRestaurantByType', // the lambda function we are going to invoke
+            Payload: JSON.stringify({
+                type,
+            }),
+        };
+    
+        lambda.invoke(params, (err, results) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(results.Payload);
+        }
+        });
+    });
+};
+
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -109,7 +149,8 @@ const FindRestIntentHandler = {
     },
     handle(handlerInput) {
         const uid = handlerInput.requestEnvelope.request.intent.slots.uid.value;
-        const speakOutput = `Voici l'adresse du restaurant ${uid} : `;
+        const rest = getResto(uid);
+        const speakOutput = `Voici l'adresse du restaurant ${uid} : ${rest}`;
         return handlerInput.responseBuilder
             .speak(speakOutput)
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
@@ -123,8 +164,9 @@ const FindRestByTypeIntentHandler = {
             && Alexa.getIntentName(handlerInput.requestEnvelope) === 'FindRestByTypeIntent';
     },
     handle(handlerInput) {
-        const type = handlerInput.requestEnvelope.request.intent.slots.type.value;
-        const speakOutput = `Voici les ${type} à proximité : `;
+        const type = handlerInput.requestEnvelope.request.intent.slots.restaurant.value;
+        const restos = getRestosByType(type);
+        const speakOutput = `Voici les ${type} à proximité : ${restos}`;
         return handlerInput.responseBuilder
             .speak(speakOutput)
             //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
