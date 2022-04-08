@@ -5,6 +5,7 @@ AWS.config.update({
 });
 
 const DynamoDB = new AWS.DynamoDB();
+var docClient = new AWS.DynamoDB.DocumentClient();
 
 function createTable() {
     const params = {
@@ -26,13 +27,130 @@ function createTable() {
     });
 }
 
-function addRestaurant(event,context) {
+function generateRestaurants() {
+    const params = {
+        RequestItems: {
+            "Restaurants": [
+                {
+                    PutRequest: {
+                        Item: {
+                            uid: { S: "King Burger" },
+                            name: { S: "King Burger" },
+                            typeRestaurant: { S: "Fast food" },
+                            adresse: { S: "163 Rue du Faubourg d'Arras, 59000 Lille" },
+                        }
+                    }
+                },
+                {
+                    PutRequest: {
+                        Item: {
+                            uid: { S: "Aux éphérites" },
+                            name: { S: "Aux éphérites" },
+                            typeRestaurant: { S: "Bistro" },
+                            adresse: { S: "17 Rue Nicolas Leblanc, 59000 Lille" },
+                        }
+                    }
+                },
+                {
+                    PutRequest: {
+                        Item: {
+                            uid: { S: "Le Chantecler" },
+                            name: { S: "Le Chantecler" },
+                            typeRestaurant: { S: "Restaurant français" },
+                            adresse: { S: "22 Rue Nicolas Leblanc, 59000 Lille" },
+                        }
+                    }
+                },
+                {
+                    PutRequest: {
+                        Item: {
+                            uid: { S: "Patrimoine Kabyle" },
+                            name: { S: "Patrimoine Kabyle" },
+                            typeRestaurant: { S: "Restaurant de cuisine traditionnelle" },
+                            adresse: { S: "30 Rue Nicolas Leblanc, 59000 Lille" },
+                        }
+                    }
+                },
+                {
+                    PutRequest: {
+                        Item: {
+                            uid: { S: "La Fossetta" },
+                            name: { S: "La Fossetta" },
+                            typeRestaurant: { S: "Restaurant italien" },
+                            adresse: { S: "15 Rue des Fossés, 59000 Lille" },
+                        }
+                    }
+                },
+                {
+                    PutRequest: {
+                        Item: {
+                            uid: { S: "Saveurs de l'Inde" },
+                            name: { S: "Saveurs de l'Inde" },
+                            typeRestaurant: { S: "Restaurant indien" },
+                            adresse: { S: "181 Rue Solférino, 59000 Lille" },
+                        }
+                    }
+                },
+                {
+                    PutRequest: {
+                        Item: {
+                            uid: { S: "L'Avant Scène" },
+                            name: { S: "L'Avant Scène" },
+                            typeRestaurant: { S: "Restaurant français" },
+                            adresse: { S: "8 Pl. Philippe Lebon, 59000 Lille" },
+                        }
+                    }
+                },
+                {
+                    PutRequest: {
+                        Item: {
+                            uid: { S: "Chez Max Bistrot Lillois" },
+                            name: { S: "Chez Max Bistrot Lillois" },
+                            typeRestaurant: { S: "Restaurant français" },
+                            adresse: { S: "164 Rue Solférino, 59800 Lille" },
+                        }
+                    }
+                },
+                {
+                    PutRequest: {
+                        Item: {
+                            uid: { S: "Le Broc" },
+                            name: { S: "Le Broc" },
+                            typeRestaurant: { S: "Restaurant français" },
+                            adresse: { S: "17 Pl. de Béthune, 59800 Lille" },
+                        }
+                    }
+                },
+                {
+                    PutRequest: {
+                        Item: {
+                            uid: { S: "Il Ristorante - le restaurant Italien de Lille" },
+                            name: { S: "Il Ristorante - le restaurant Italien de Lille" },
+                            typeRestaurant: { S: "Restaurant italien" },
+                            adresse: { S: "51 Rue des Tanneurs, 59000 Lille" },
+                        }
+                    }
+                },
+            ]
+        }
+    };
+
+    DynamoDB.batchWriteItem(params, function (err) {
+        if (err) {
+            console.error("Impossible d'ajouter les restaurants", err);
+        } else {
+            console.log(`Tous les restaurants ont été ajoutés`);
+        }
+    });
+}
+
+function addRestaurant(event, context) {
     const params = {
         TableName: "Restaurants",
         Item: {
             uid: { S: event.name },
             name: { S: event.name },
-            type: { S: event.type },
+            typeRestaurant: { S: event.typeRestaurant },
             adresse: { S: event.adresse },
         },
     };
@@ -41,7 +159,7 @@ function addRestaurant(event,context) {
         if (err) {
             console.error("Impossible d'ajouter le restaurant", err);
         } else {
-            console.log(`Le ${event.type} ${event.name} situé le ${event.adresse} a été ajouté`);
+            console.log(`Le ${event.typeRestaurant} ${event.name} situé le ${event.adresse} a été ajouté`);
         }
     });
 }
@@ -80,27 +198,50 @@ function getRestaurant(event, context) {
 
 function updateRestaurantName(event, context) {
     const params = {
-      TableName: "Restaurants",
-      Item: {
-        uid: { S: event.uid },
-        name: { S: event.name.toString() },
-      },
-      ReturnConsumedCapacity: "TOTAL",
+        TableName: "Restaurants",
+        Item: {
+            uid: { S: event.uid },
+            name: { S: event.name.toString() },
+        },
+        ReturnConsumedCapacity: "TOTAL",
     };
-  
-    DynamoDB.putItem(params, function(err) {
-      if (err) {
-        console.error("Impossible de trouver le film", err);
-      } else {
-        console.log(`Le nom du restaurant ${event.uid} a bien été mis à jour avec le nom ${event.name}`);
-      }
+
+    DynamoDB.putItem(params, function (err) {
+        if (err) {
+            console.error("Impossible de trouver le film", err);
+        } else {
+            console.log(`Le nom du restaurant ${event.uid} a bien été mis à jour avec le nom ${event.name}`);
+        }
     });
-  }
+}
+
+function getRestaurantByType(event) {
+
+    docClient.scan({
+        TableName: "Restaurants",
+        FilterExpression: "contains(typeRestaurant, :typeRestaurant)",
+        ExpressionAttributeValues: { ":typeRestaurant": event.typeRestaurant }},
+        function(err, data) {
+            if (err) {
+                console.error("Impossible de trouver le restaurant", err);
+            } else {
+                console.log(`Trouvé ${data.Count} restaurants`);
+                console.log(data.Items);
+                return {
+                    statusCode: 200,
+                    body:  data.Items
+                }
+            }
+        }
+    );
+}
 
 module.exports = {
     createTable,
+    generateRestaurants,
     addRestaurant,
     getAllRestaurants,
     getRestaurant,
-    updateRestaurantName
+    updateRestaurantName,
+    getRestaurantByType
 };

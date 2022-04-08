@@ -8,6 +8,6 @@ architecture = "x86_64"
 handler = "app.createTable"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["CreateTableFunction", "AddRestaurantFunction", "GetAllRestaurantFunction", "GetRestaurantFunction", "UpdateRestaurantNameFunction"]
+functions = ["CreateTableFunction", "GenerateRestaurantsFunction", "AddRestaurantFunction", "GetAllRestaurantFunction", "GetRestaurantFunction", "UpdateRestaurantNameFunction", "GetRestaurantByTypeFunction"]
 
 [layer_build_definitions]
