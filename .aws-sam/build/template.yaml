@@ -7,19 +7,21 @@ Globals:
   Function:
     Timeout: 30
 Resources:
-  CreateTableFunction:
+  CreateTablesFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: CreateTableFunction
-      Handler: app.createTable
+      CodeUri: CreateTablesFunction
+      Handler: app.createTables
       Runtime: nodejs14.x
       Architectures:
       - x86_64
       Policies:
       - DynamoDBCrudPolicy:
           TableName: Restaurants
+      - DynamoDBCrudPolicy:
+          TableName: Datas
     Metadata:
-      SamResourceId: CreateTableFunction
+      SamResourceId: CreateTablesFunction
   GenerateRestaurantsFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -98,3 +100,16 @@ Resources:
           TableName: Restaurants
     Metadata:
       SamResourceId: GetRestaurantByTypeFunction
+  AddDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: AddDataFunction
+      Handler: app.addData
+      Runtime: nodejs14.x
+      Architectures:
+      - x86_64
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName: Datas
+    Metadata:
+      SamResourceId: AddDataFunction

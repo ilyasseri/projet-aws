@@ -1,3 +1,4 @@
+//const { v4: uuidv4 } = require("uuid");    
 const AWS = require("aws-sdk");
 
 AWS.config.update({
@@ -7,8 +8,8 @@ AWS.config.update({
 const DynamoDB = new AWS.DynamoDB();
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-function createTable() {
-    const params = {
+function createTables() {
+    const restaurant = {
         TableName: "Restaurants",
         KeySchema: [{ AttributeName: "uid", KeyType: "HASH" }],
         AttributeDefinitions: [{ AttributeName: "uid", AttributeType: "S" }],
@@ -18,9 +19,27 @@ function createTable() {
         },
     };
 
-    DynamoDB.createTable(params, function (err, data) {
+    DynamoDB.createTable(restaurant, function (err, data) {
         if (err) {
-            console.error("Impossible de créer la table", err);
+            console.error("Impossible de créer la table Restaurants", err);
+        } else {
+            console.log("Table créée", data);
+        }
+    });
+
+    const datas = {
+        TableName: "Datas",
+        KeySchema: [{ AttributeName: "uid", KeyType: "HASH" }],
+        AttributeDefinitions: [{ AttributeName: "uid", AttributeType: "S" }],
+        ProvisionedThroughput: {
+            ReadCapacityUnits: 10,
+            WriteCapacityUnits: 10,
+        },
+    };
+
+    DynamoDB.createTable(datas, function (err, data) {
+        if (err) {
+            console.error("Impossible de créer la table Datas", err);
         } else {
             console.log("Table créée", data);
         }
@@ -220,8 +239,9 @@ function getRestaurantByType(event) {
     docClient.scan({
         TableName: "Restaurants",
         FilterExpression: "contains(typeRestaurant, :typeRestaurant)",
-        ExpressionAttributeValues: { ":typeRestaurant": event.typeRestaurant }},
-        function(err, data) {
+        ExpressionAttributeValues: { ":typeRestaurant": event.typeRestaurant }
+    },
+        function (err, data) {
             if (err) {
                 console.error("Impossible de trouver le restaurant", err);
             } else {
@@ -229,19 +249,48 @@ function getRestaurantByType(event) {
                 console.log(data.Items);
                 return {
                     statusCode: 200,
-                    body:  data.Items
+                    body: data.Items
                 }
             }
         }
     );
 }
 
+function uuidv4() {
+    return 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        var r = (Math.random() * 16) | 0,
+            v = c == 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+    });
+}
+
+function addData(event, context) {
+    let uid = uuidv4();
+    const params = {
+        TableName: "Datas",
+        Item: {
+            uid: { S: uid },
+            typeRestaurant: { S: event.typeRestaurant },
+        },
+    };
+
+    DynamoDB.putItem(params, function (err) {
+        if (err) {
+            console.error("Impossible d'ajouter la donnée", err);
+        } else {
+            console.log(`La donnée a été ajouté`);
+        }
+    });
+}
+
+
 module.exports = {
-    createTable,
+    createTables,
     generateRestaurants,
     addRestaurant,
     getAllRestaurants,
     getRestaurant,
     updateRestaurantName,
-    getRestaurantByType
+    getRestaurantByType,
+    addData
 };
